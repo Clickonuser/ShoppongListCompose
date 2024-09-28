@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
+import com.example.shoppinglistcompose.navigation.NavigationGraph
 import com.example.shoppinglistcompose.ui.theme.MyPink
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -21,7 +22,7 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = {
-            NavBar()
+            NavBar(navController)
 
         },
         floatingActionButton = {
@@ -39,6 +40,6 @@ fun MainScreen() {
         },
         floatingActionButtonPosition = FabPosition.End,
     ) {
-
+        NavigationGraph(navController)
     }
 }

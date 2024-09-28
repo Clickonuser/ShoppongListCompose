@@ -8,10 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.shoppinglistcompose.ui.theme.MyPink
 
 @Composable
-fun NavBar() {
+fun NavBar(navController: NavController) {
 
     val listNavBarItems = listOf(
         NavBarItem.ListItem,
@@ -21,10 +23,12 @@ fun NavBar() {
     )
 
     NavigationBar {
+        val backStackEntry = navController.currentBackStackEntryAsState()
+        val currentRoute = backStackEntry.value?.destination?.route
         listNavBarItems.forEach { navItem ->
             NavigationBarItem(
-                selected = false,
-                onClick = { },
+                selected = currentRoute == navItem.route,
+                onClick = { navController.navigate(navItem.route) },
                 icon = {
                     Icon(
                         painter = painterResource(id = navItem.imageId),
