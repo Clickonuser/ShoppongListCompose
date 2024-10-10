@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppinglistcompose.data.MainListItem
 import com.example.shoppinglistcompose.data.repository.MainListRepository
+import com.example.shoppinglistcompose.dialog.DialogEvent
 import com.example.shoppinglistcompose.utils.DialogController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,6 +15,8 @@ import javax.inject.Inject
 class MainListViewModel @Inject constructor(
     private val repository: MainListRepository
 ) : ViewModel(), DialogController {
+
+    private val list = repository.getAllItems()
 
     private var listItem: MainListItem? = null
 
@@ -29,10 +32,17 @@ class MainListViewModel @Inject constructor(
     fun onEvent(event: MainListEvent) {
         when (event) {
             is MainListEvent.OnShowDeleteDialog -> {
-
+                listItem = event.item
+                showDialog.value = true
+                dialogTitle.value = "Delete this item?"
+                showEditableText.value = false
             }
             is MainListEvent.OnShowEditDialog -> {
                 listItem = event.item
+                showDialog.value = true
+                editableText.value = listItem?.name ?: ""
+                dialogTitle.value = "List name:"
+                showEditableText.value = true
             }
             is MainListEvent.OnItemClick -> {
 
@@ -49,6 +59,28 @@ class MainListViewModel @Inject constructor(
                         )
                     )
                 }
+            }
+        }
+    }
+    fun onDialogEvent(event: DialogEvent) {
+        when (event) {
+            is DialogEvent.OnTextChange -> {
+                editableText.value = event.text
+            }
+            is DialogEvent.OnConfirm -> {
+                if (showEditableText.value) {
+                    onEvent(MainListEvent.OnItemAdd)
+                } else {
+                    viewModelScope.launch {
+                        listItem?.let {
+                            repository.deleteItem(it)
+                        }
+                    }
+                }
+                showDialog.value = false
+            }
+            is DialogEvent.OnDismiss -> {
+                showDialog.value = false
             }
         }
     }
