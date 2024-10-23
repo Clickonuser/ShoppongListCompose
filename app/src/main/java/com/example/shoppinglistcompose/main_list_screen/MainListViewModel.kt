@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.shoppinglistcompose.data.MainListItem
 import com.example.shoppinglistcompose.data.repository.MainListRepository
 import com.example.shoppinglistcompose.dialog.DialogEvent
-import com.example.shoppinglistcompose.utils.DialogController
+import com.example.shoppinglistcompose.dialog.DialogController
 import com.example.shoppinglistcompose.utils.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -68,7 +68,7 @@ class MainListViewModel @Inject constructor(
             }
         }
     }
-    fun onDialogEvent(event: DialogEvent) {
+    override fun onDialogEvent(event: DialogEvent) {
         when (event) {
             is DialogEvent.OnTextChange -> {
                 editableText.value = event.text
