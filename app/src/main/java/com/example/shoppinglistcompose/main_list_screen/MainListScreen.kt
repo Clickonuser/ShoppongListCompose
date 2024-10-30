@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.shoppinglistcompose.dialog.MainDialog
 
 @Composable
 fun MainListScreen(
@@ -25,7 +26,10 @@ fun MainListScreen(
         contentPadding = PaddingValues(bottom = 100.dp)
     ) {
         items(items.value) {
-            UiMainListItem(it)
+            UiMainListItem(it) { event ->
+                viewModel.onEvent(event)
+            }
         }
     }
+    MainDialog(viewModel)
 }

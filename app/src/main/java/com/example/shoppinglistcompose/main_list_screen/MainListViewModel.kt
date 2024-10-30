@@ -54,12 +54,13 @@ class MainListViewModel @Inject constructor(
                 sendUiEvent(UiEvent.Navigate(event.route))
             }
             is MainListEvent.OnItemAdd -> {
+                if (editableText.value.isEmpty()) return
                 viewModelScope.launch {
                     repository.insertItem(
                         MainListItem(
                             id = listItem?.id,
                             name = editableText.value,
-                            time = "",
+                            time = "12/12/2024 13:00",
                             allItemCount = listItem?.allItemCount ?: 0,
                             selectedItemCount = listItem?.selectedItemCount ?: 0
                         )
