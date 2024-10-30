@@ -23,11 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.shoppinglistcompose.R
+import com.example.shoppinglistcompose.data.MainListItem
+import com.example.shoppinglistcompose.ui.theme.MyBlueLight
 import com.example.shoppinglistcompose.ui.theme.MyGreen
 import com.example.shoppinglistcompose.ui.theme.MyRed
 
 @Composable
-fun UiMainListItem() {
+fun UiMainListItem(mainListItem: MainListItem) {
     ConstraintLayout(
         modifier = Modifier.padding(
             start = 4.dp, top = 16.dp, end = 4.dp
@@ -37,11 +39,13 @@ fun UiMainListItem() {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 5.dp)
                 .constrainAs(card) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }
+                },
+            shape = RoundedCornerShape(5.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -49,7 +53,7 @@ fun UiMainListItem() {
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "Title",
+                    text = mainListItem.name,
                     style = TextStyle(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
@@ -57,7 +61,8 @@ fun UiMainListItem() {
                     )
                 )
                 Text(
-                    text = "12/12/2023 13:00",
+                    modifier = Modifier.padding(top = 4.dp),
+                    text = mainListItem.time,
                     style = TextStyle(
                         color = Color.DarkGray,
                         fontSize = 12.sp
@@ -66,7 +71,11 @@ fun UiMainListItem() {
                 LinearProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 5.dp)
+                        .padding(top = 5.dp),
+                    progress = {
+                        0.2f
+                    },
+                    trackColor = Color.LightGray
                 )
             }
         }
@@ -80,7 +89,7 @@ fun UiMainListItem() {
                     end.linkTo(card.end)
                 }
                 .padding(end = 10.dp)
-                .size(32.dp)
+                .size(30.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.delete_icon),
@@ -102,7 +111,7 @@ fun UiMainListItem() {
                     end.linkTo(deleteButton.start)
                 }
                 .padding(end = 5.dp)
-                .size(32.dp)
+                .size(30.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.edit_icon),
@@ -126,18 +135,18 @@ fun UiMainListItem() {
                 .padding(end = 5.dp)
         ) {
             Text(
-                text = "3/4",
+                text = "${mainListItem.selectedItemCount}/${mainListItem.allItemCount}",
+                fontSize = 16.sp,
                 modifier = Modifier
-                    .background(MyRed)
+                    .background(MyBlueLight)
                     .padding(
                         start = 5.dp,
                         end = 5.dp,
-                        top = 4.dp,
-                        bottom = 4.dp
+                        top = 3.dp,
+                        bottom = 3.dp
                     ),
                 color = Color.White
             )
         }
-
     }
 }

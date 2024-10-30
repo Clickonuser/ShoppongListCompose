@@ -33,9 +33,11 @@ class MainScreenViewModel @Inject constructor(
             is DialogEvent.OnConfirm -> {
                 onEvent(MainScreenEvent.OnItemAdd)
                 showDialog.value = false
+                editableText.value = ""
             }
             is DialogEvent.OnDismiss -> {
                 showDialog.value = false
+                editableText.value = ""
             }
         }
     }
@@ -52,7 +54,7 @@ class MainScreenViewModel @Inject constructor(
                         MainListItem(
                             id = null,
                             name = editableText.value,
-                            time = "",
+                            time = "12/12/2024 13:00",
                             allItemCount = 0,
                             selectedItemCount = 0
                         )
